@@ -59,7 +59,10 @@ jobs:
 
     # Step 2: List files to check Dockerfile location
     - name: List files
-      run: ls -la
+      run: |
+        ls -la
+        echo "Directory structure:"
+        find . -type f
 
     # Step 3: Check if Docker is installed
     - name: Check Docker installation
