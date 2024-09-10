@@ -39,14 +39,23 @@ jobs:
     - name: Test with Maven
       run: mvn test
 
+    # Step 6: Upload JAR file as an artifact
+    - name: Upload JAR file
+      uses: actions/upload-artifact@v3
+      with:
+        name: demo-jar
+        path: target/demo-0.0.1-SNAPSHOT.jar
+
   docker:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the code
-    - name: Checkout code
-      uses: actions/checkout@v3
+    # Step 1: Download the artifact from the build job
+    - name: Download JAR file
+      uses: actions/download-artifact@v3
+      with:
+        name: demo-jar
 
     # Step 2: Check if Docker is installed
     - name: Check Docker installation
