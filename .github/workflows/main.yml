@@ -39,12 +39,14 @@ jobs:
     - name: Test with Maven
       run: mvn test
 
-    # Step 6: Upload JAR file as an artifact
-    - name: Upload JAR file
+    # Step 6: Upload JAR file and Dockerfile as artifacts
+    - name: Upload JAR file and Dockerfile
       uses: actions/upload-artifact@v3
       with:
-        name: demo-jar
-        path: target/demo-0.0.1-SNAPSHOT.jar
+        name: build-artifacts
+        path: |
+          target/demo-0.0.1-SNAPSHOT.jar
+          Dockerfile
 
   docker:
     needs: build
@@ -52,10 +54,10 @@ jobs:
 
     steps:
     # Step 1: Download the artifact from the build job
-    - name: Download JAR file
+    - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
-        name: demo-jar
+        name: build-artifacts
 
     # Step 2: List files to check Dockerfile location
     - name: List files
