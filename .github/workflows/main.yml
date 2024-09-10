@@ -72,7 +72,7 @@ jobs:
 
     # Step 4: Build Docker image
     - name: Build Docker image
-      run: docker build -f Dockerfile -t image-uploader:latest .
+      run: docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/my-app:latest .
 
     # Step 5: Log in to Docker Hub
     - name: Log in to Docker Hub
@@ -83,6 +83,6 @@ jobs:
 
     # Step 6: Push Docker image to Docker Hub
     - name: Push Docker image
-      run: docker push image-uploader:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
-    
+   
