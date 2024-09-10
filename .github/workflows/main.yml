@@ -70,7 +70,7 @@ jobs:
 
     # Step 4: Build Docker image
     - name: Build Docker image
-      run: docker build -t image-uploader:latest .
+      run: docker build -f Dockerfile -t image-uploader:latest .
 
     # Step 5: Run Docker container with port mapping
     - name: Run Docker container
