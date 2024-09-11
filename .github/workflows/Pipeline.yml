@@ -15,16 +15,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Step 2: Deploy to EC2
     - name: Deploy to EC2
-  uses: appleboy/ssh-action@master
-  with:
-    host: ${{ secrets.EC2_HOST }}
-    username: ${{ secrets.EC2_USER }}
-    key: ${{ secrets.EC2_SSH_KEY }}
-    port: 22
-    script: |
-      echo "Successfully logged into EC2"
-      # Additional commands can go here
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
+        script: |
+          echo "Successfully logged into EC2"
+          # Additional commands can go here
 
     # Step 3: Set up JDK 17 for Maven build
     - name: Set up JDK 17
@@ -84,5 +85,3 @@ jobs:
     # Step 4: Build Docker image
     - name: Build Docker image
       run: docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/my-app:latest .
-
-    
