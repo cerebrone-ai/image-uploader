@@ -1,0 +1,26 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # Trigger this action on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Connect to EC2 via SSH
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.EC2_HOST }}           # EC2 public IP or DNS (set as secret in GitHub)
+        username: ${{ secrets.EC2_USER }}       # EC2 username (e.g., ec2-user or ubuntu, set as secret)
+        key: ${{ secrets.EC2_SSH_KEY }}         # EC2 private key (.pem file content, set as secret)
+        port: 22                                # SSH port (usually 22)
+        script: |
+          echo "Successfully logged into EC2"
+          # You can place further commands here, e.g., check Minikube status, etc.
+          uname -a
