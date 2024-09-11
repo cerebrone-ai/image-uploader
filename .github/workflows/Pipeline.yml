@@ -3,7 +3,7 @@ name: Build, Test, and Push to Docker Hub
 on:
   push:
     branches:
-      - main
+      - shaik
   workflow_dispatch: # Allows you to manually trigger 
 
 jobs:
@@ -15,20 +15,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Log in to EC2
-    - name: Log in to EC2
-      env:
-        HOST_NAME: ${{ secrets.EC2_HOST }}
-        USER_NAME: ${{ secrets.EC2_USER }}
-        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-      run: |
-        echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-        if ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} 'exit'; then
-          echo "Successfully logged into EC2 instance!"
-        else
-          echo "Failed to log in to EC2 instance. Error code: $?"
-          exit 1
-        fi
+    - name: Deploy to EC2
+  uses: appleboy/ssh-action@master
+  with:
+    host: ${{ secrets.EC2_HOST }}
+    username: ${{ secrets.EC2_USER }}
+    key: ${{ secrets.EC2_SSH_KEY }}
+    port: 22
+    script: |
+      echo "Successfully logged into EC2"
+      # Additional commands can go here
 
     # Step 3: Set up JDK 17 for Maven build
     - name: Set up JDK 17
