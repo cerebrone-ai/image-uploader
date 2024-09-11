@@ -3,7 +3,8 @@ name: Build, Test, and Push to Docker Hub
 on:
   push:
     branches:
-      - shaik
+      - main
+  workflow_dispatch: # Allows you to manually trigger 
 
 jobs:
   build:
