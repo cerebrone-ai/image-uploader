@@ -1,7 +1,10 @@
-name: CI/CD Pipeline
+name: CI Pipeline for Image Uploader
 
 on:
   push:
+    branches:
+      - dikshita
+  pull_request:
     branches:
       - dikshita
 
@@ -13,13 +16,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        distribution: 'adopt'  # You can change this to 'zulu' or any other distribution you prefer
+        java-version: '17'
 
     - name: Build with Maven
-      run: mvn clean package -Dmaven.test.skip=true
+      run: mvn clean install
+
+    - name: Test with Maven
+      run: mvn test
 
     - name: Login to Docker Hub
       uses: docker/login-action@v1
@@ -27,10 +34,8 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USER_D }}
         password: ${{ secrets.DOCKER_HUB_PASS_D }}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: disidesh/spring-boot:latest
+    - name: Build Docker Image
+      run: docker build -t disidesh/spring-boot .
+
+    - name: Push Docker Image
+      run: docker push disidesh/spring-boot
