@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-image-uploader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springboot-image-uploader
+  template:
+    metadata:
+      labels:
+        app: springboot-image-uploader
+    spec:
+      containers:
+      - name: springboot-image-uploader
+        image: shaik2024/my-app:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: aws-access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: aws-secret-access-key
