@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-uploader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springboot-uploader
+  template:
+    metadata:
+      labels:
+        app: springboot-uploader
+    spec:
+      containers:
+      - name: springboot-uploader
+        image: maansireddy15/imageuploaderapp:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secrets
+              key: aws-access-key  # Changed from AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secrets
+              key: aws-secret-key  # Changed from AWS_SECRET_ACCESS_KEY
