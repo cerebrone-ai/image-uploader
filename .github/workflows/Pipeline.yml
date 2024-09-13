@@ -8,14 +8,21 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: remote ssh 
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: whoami
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH key
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > training-key.pem
+        chmod 600 training-key.pem
+
+    - name: Execute remote SSH commands
+      run: |
+        ssh -i training-key.pem -o StrictHostKeyChecking=no root@ec2-54-82-146-94.compute-1.amazonaws.com << 'EOF'
+          whoami
+          sudo apt-get update -y
+          sudo apt-get upgrade -y
+        EOF
