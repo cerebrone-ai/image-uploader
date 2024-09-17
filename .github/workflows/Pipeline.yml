@@ -19,9 +19,13 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > training-key.pem
         chmod 600 training-key.pem
 
+    - name: Add EC2 instance to known_hosts
+      run: |
+        ssh-keyscan -H 54.196.166.253 >> ~/.ssh/known_hosts
+
     - name: Execute remote SSH commands
       run: |
-        ssh -i training-key.pem root@ec2-54-82-146-94.compute-1.amazonaws.com << 'EOF'
+        ssh -i training-key.pem root@54.196.166.253 << 'EOF'
           whoami
           sudo apt-get update -y
           sudo apt-get upgrade -y
