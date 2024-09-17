@@ -22,9 +22,9 @@ spec:
           valueFrom:
             secretKeyRef:
               name: aws-secrets
-              key: aws-access-key  # Changed from AWS_ACCESS_KEY_ID
+              key: aws-access-key  # Must match the key name in your secret file
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
               name: aws-secrets
-              key: aws-secret-key  # Changed from AWS_SECRET_ACCESS_KEY
+              key: aws-secret-key  # Must match the key name in your secret file

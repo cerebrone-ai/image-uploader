@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: springboot-uploader-service
 spec:
-  type: NodePort
-  ports:
-  - port: 8080
-    targetPort: 8080
   selector:
     app: springboot-uploader
+  ports:
+    - protocol: TCP
+      port: 8080          # Container port
+      targetPort: 8080    # The port the container listens on
+      nodePort: 32601     # NodePort for external access
+  type: NodePort
