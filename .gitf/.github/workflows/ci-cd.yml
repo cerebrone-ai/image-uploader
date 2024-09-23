@@ -48,4 +48,6 @@ jobs:
         echo "${{ secrets.CLIENT_KEY_CONTENT }}" > $HOME/.kube/client.key
         chmod 600 $HOME/.kube/config $HOME/.kube/client.crt $HOME/.kube/client.key
 
-   
+    - name: Deploy to DigitalOcean using Helm
+      run: |
+        helm upgrade --install my-spring-boot-uploader ./my-spring-boot-app-0.1.0.tgz --namespace interns --values ./my-spring-boot-app/values.yaml
