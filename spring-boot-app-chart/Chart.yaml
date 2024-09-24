@@ -1,0 +1,5 @@
+# spring-boot-app-chart/Chart.yaml
+apiVersion: v2
+name: spring-boot-app-chart
+description: A Helm chart for deploying a Spring Boot application on Kubernetes.
+version: 0.1.0

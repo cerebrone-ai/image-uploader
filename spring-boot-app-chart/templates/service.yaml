@@ -1,0 +1,13 @@
+# spring-boot-app-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-service
+spec:
+  type: NodePort # Expose the service using NodePort for public access
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      nodePort: 30001 # Optional, specify a NodePort or let Kubernetes assign one.
+  selector:
+    app: spring-boot-app

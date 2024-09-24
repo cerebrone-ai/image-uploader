@@ -1,0 +1,15 @@
+# spring-boot-app-chart/values.yaml
+replicaCount: 1
+
+image:
+  repository: disidesh/spring-boot # Replace with your Docker Hub repository
+  pullPolicy: IfNotPresent
+  tag: latest
+
+service:
+  enabled: true
+  type: NodePort # Use NodePort for external access
+  port: 80 # Public port exposed
+  targetPort: 8080 # Port your application listens on
+
+resources: {}
