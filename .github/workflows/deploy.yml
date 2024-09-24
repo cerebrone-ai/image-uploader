@@ -66,6 +66,6 @@ jobs:
     - name: Deploy Helm on DOKS
       run: |
         helm upgrade --install spring-boot-application spring-boot-app-chart \
-          -f spring-boot-app-chart/templates/values.yaml \
+          -f spring-boot-app-chart/values.yaml \
           --set image.tag=${{ github.sha }} \
           --namespace ${{ vars.K8S_NAMESPACE }}  # Use the variable he
