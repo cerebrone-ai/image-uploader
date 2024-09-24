@@ -43,12 +43,12 @@ jobs:
           mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config # Ensure this secret exists.
 
-      #- name: Install Helm (if not already installed)
-      #  run: |
-       #   curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3.sh | bash
+      - name: Install Helm (if not already installed)
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3.sh | bash
 
-      #- name: Deploy to Kubernetes with Helm using NodePort service type 
-       # run: |
-       #   helm upgrade --install spring-boot-app ./spring-boot-app-chart \
-       #     --set image.tag=latest \
-       #     --namespace your-namespace --create-namespace 
+      - name: Deploy to Kubernetes with Helm using NodePort service type 
+        run: |
+          helm upgrade --install spring-boot-app ./spring-boot-app-chart \
+            --set image.tag=latest \
+            --namespace interns --create-namespace 
