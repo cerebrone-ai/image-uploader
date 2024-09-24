@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "spring-boot-app.fullname" . }}
+  name: {{ include "spring-boot-app" . }}
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -14,6 +14,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "spring-boot-app.fullname" . }}
+                name: {{ include "spring-boot-app" . }}
                 port:
                   number: {{ .Values.service.port }}
