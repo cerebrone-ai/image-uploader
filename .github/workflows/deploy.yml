@@ -9,7 +9,6 @@ on:
       - features/dikshita
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
 
@@ -21,7 +20,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'adopt'  
+        distribution: 'adopt'
 
     - name: Build with Maven
       run: mvn clean package -Dmaven.test.skip=true
@@ -49,6 +48,7 @@ jobs:
   deploy_to_kubernetes:
     needs: build
     runs-on: ubuntu-latest
+    
     steps:
     - name: Install DOCTL command
       run: |
@@ -61,11 +61,13 @@ jobs:
     - name: Configure Digital Ocean Credentials
       run: |
         doctl auth init --access-token ${{ secrets.DO_ACCOUNT_TOKEN }}
-        doctl kubernetes cluster kubeconfig save 37a5f702-e1a8-4732-9490-f5e047b5a724
+        doctl kubernetes cluster kubeconfig save <your-cluster-id>  # Replace with your cluster ID
 
-    - name: Deploy Helm on DOKS
+    - name: Deploy Ingress Controller (if not already installed)
       run: |
-        helm upgrade --install spring-boot-application spring-boot-app-chart \
-          -f spring-boot-app-chart/values.yaml \
-          --set image.tag=${{ github.sha }} \
-          --namespace ${{ vars.K8S_NAMESPACE }}  # Use the variable he
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+        helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+          --namespace ingress-nginx --create-namespace
+
+
+          

@@ -1,5 +1,3 @@
-# spring-boot-app-chart/values.yaml
-
 replicaCount: 1
 
 image:
@@ -12,8 +10,11 @@ service:
 
 ingress:
   enabled: true
-  host: interns.labcerebrone.com  # Replace with your actual domain name
+  hostname: interns.labcerebrone.com  # Replace with your actual domain name
   path: /
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /
+  tls:
+    enabled: false             # Set to true if using TLS
+    secretName: your-tls-secret # Replace with your TLS secret name (if enabled)
