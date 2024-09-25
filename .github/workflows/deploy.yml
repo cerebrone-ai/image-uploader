@@ -63,11 +63,6 @@ jobs:
         doctl auth init --access-token ${{ secrets.DO_ACCOUNT_TOKEN }}
         doctl kubernetes cluster kubeconfig save 37a5f702-e1a8-4732-9490-f5e047b5a724  # Replace with your cluster ID
 
-    - name: Deploy Ingress Controller (if not already installed)
-      run: |
-        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-        helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-          --namespace ingress-nginx --create-namespace
 
     - name: Deploy Helm on DOKS
       run: |
