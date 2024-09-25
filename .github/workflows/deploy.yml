@@ -69,5 +69,9 @@ jobs:
         helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
           --namespace ingress-nginx --create-namespace
 
-
-          
+    - name: Deploy Helm on DOKS
+      run: |
+        helm upgrade --install spring-boot-application spring-boot-app-chart \
+          -f spring-boot-app-chart/values.yaml \
+          --set image.tag=${{ github.sha }} \
+          --namespace interns  # Replace with your actual namespace
