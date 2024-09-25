@@ -61,7 +61,7 @@ jobs:
     - name: Configure Digital Ocean Credentials
       run: |
         doctl auth init --access-token ${{ secrets.DO_ACCOUNT_TOKEN }}
-        doctl kubernetes cluster kubeconfig save <your-cluster-id>  # Replace with your cluster ID
+        doctl kubernetes cluster kubeconfig save 37a5f702-e1a8-4732-9490-f5e047b5a724  # Replace with your cluster ID
 
     - name: Deploy Ingress Controller (if not already installed)
       run: |
