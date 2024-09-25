@@ -1,22 +1,23 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: {{ include "spring-boot-app.fullname" . }}
+  name: spring-boot-app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-prod  # Ensure this matches your cert-manager setup
 spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "spring-boot-app.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: {{ include "spring-boot-app.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-    spec:
-      containers:
-        - name: spring-boot-app
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          ports:
-            - containerPort: {{ .Values.service.port }}  # Ensure this is defined
-          # Add any other necessary configuration for your container here
+  tls:
+    - hosts:
+        - interns.labcerebrone.com  # Your domain name
+      secretName: interns-tls       # The name of the secret containing the TLS certificate
+  rules:
+    - host: interns.labcerebrone.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: spring-boot-app  # Ensure this matches your service name defined in deployment
+                port:
+                  number: 8080          # Ensure this matches the service port defined in your service.yaml
