@@ -1,4 +1,3 @@
-# spring-boot-app-chart/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,4 +18,4 @@ spec:
         - name: spring-boot-app
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           ports:
-            - containerPort: {{ .Values.service.targetPort }}
+            - containerPort: {{ .Values.service.port }}  # Change targetPort to port
