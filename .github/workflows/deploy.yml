@@ -42,7 +42,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: disidesh/spring-boot-app:${{ github.sha }}
+        tags: disidesh/spring-boot-app:latest
         build-args: PROFILE=your-profile
 
   deploy_to_kubernetes:
