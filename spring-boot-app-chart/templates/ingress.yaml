@@ -6,8 +6,9 @@ metadata:
     acme.cert-manager.io/http01-edit-in-place: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /
-    
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Ensure SSL redirection
 spec:
+  ingressClassName: nginx  # Explicitly use the NGINX Ingress Class
   tls:
     - hosts:
         - interns.labcerebrone.com  # Your domain name
@@ -16,10 +17,10 @@ spec:
     - host: interns.labcerebrone.com
       http:
         paths:
-          - path: /
+          - path: /upload
             pathType: Prefix
             backend:
               service:
-                name: spring-boot-service  # Ensure this matches your service name defined in deployment
+                name: spring-boot-service  # Ensure this matches your service name
                 port:
-                  number: 8080          # Ensure this matches the service port defined in your service.yaml
+                  number: 8080          # Ensure this matches the service port
