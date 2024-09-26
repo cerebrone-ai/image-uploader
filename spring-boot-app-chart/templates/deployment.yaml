@@ -24,10 +24,10 @@ spec:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: aws-secret  # Ensure this matches the name of your Kubernetes secret
+                  name: secret-aws  # Ensure this matches the name of your Kubernetes secret
                   key: AWS_ACCESS_KEY_ID  # This should match the key in your secret
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: aws-secret
+                  name: secret-aws
                   key: AWS_SECRET_ACCESS_KEY  # This should match the key in your secret
