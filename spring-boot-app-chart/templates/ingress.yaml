@@ -17,7 +17,7 @@ spec:
     - host: interns.labcerebrone.com
       http:
         paths:
-          - path: /
+          - path: /upload
             pathType: Prefix
             backend:
               service:
