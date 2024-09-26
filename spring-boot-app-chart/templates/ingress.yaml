@@ -20,6 +20,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: spring-boot-app  # Ensure this matches your service name defined in deployment
+                name: spring-boot  # Ensure this matches your service name defined in deployment
                 port:
                   number: 8080          # Ensure this matches the service port defined in your service.yaml
