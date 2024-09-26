@@ -1,7 +1,7 @@
 replicaCount: 1
 namespace: interns
 image:
-  repository: disidesh/spring-boot
+  repository: maansireddy15/maansi-image-uploader
   tag: latest
 
 service:
