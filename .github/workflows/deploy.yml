@@ -33,8 +33,8 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-        username: ${{ secrets.DOCKER_USERNAME_M }}
-        password: ${{ secrets.DOCKER_PASSWORD_M }}
+        username: ${{ secrets.DOCKER_USERNAME_D }}
+        password: ${{ secrets.DOCKER_TOKEN_D }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
@@ -42,7 +42,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: maansireddy15/maansi-image-uploader
+        tags: disidesh/spring-boot-app:${{ github.sha }}
         build-args: PROFILE=your-profile
 
   deploy_to_kubernetes:
