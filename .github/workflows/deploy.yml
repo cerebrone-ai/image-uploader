@@ -43,10 +43,7 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: disidesh/spring-boot:latest
-        build-args: |
-          PROFILE=your-profile
-          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_D }}
-          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_D }}
+        build-args: PROFILE=your-profile
 
   deploy_to_kubernetes:
     needs: build
@@ -64,4 +61,16 @@ jobs:
     - name: Configure Digital Ocean Credentials
       run: |
         doctl auth init --access-token ${{ secrets.DO_ACCOUNT_TOKEN }}
-       
+        doctl kubernetes cluster kubeconfig save 37a5f702-e1a8-4732-9490-f5e047b5a724  # Replace with your cluster ID
+
+    - name: Set AWS Credentials
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_D }}" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_D }}" >> $GITHUB_ENV
+
+    - name: Deploy Helm on DOKS
+      run: |
+        helm upgrade --install spring-boot-application spring-boot-app-chart \
+          -f spring-boot-app-chart/values.yaml \
+          --set image.tag=latest \
+          --namespace interns  # Replace with your actual namespace
