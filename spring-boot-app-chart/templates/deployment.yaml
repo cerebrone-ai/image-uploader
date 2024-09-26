@@ -19,4 +19,15 @@ spec:
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: Always 
           ports:
-            - containerPort: {{ .Values.service.port }}  # Change targetPort to port
+            - containerPort: {{ .Values.service.port }}  # Ensure this matches your application port
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret  # Ensure this matches the name of your Kubernetes secret
+                  key: AWS_ACCESS_KEY_ID  # This should match the key in your secret
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret
+                  key: AWS_SECRET_ACCESS_KEY  # This should match the key in your secret
