@@ -5,7 +5,7 @@ metadata:
   annotations:
     acme.cert-manager.io/http01-edit-in-place: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: ""
     nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Ensure SSL redirection
 spec:
   ingressClassName: nginx  # Explicitly use the NGINX Ingress Class
