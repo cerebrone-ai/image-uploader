@@ -7,7 +7,6 @@ image:
 service:
   type: ClusterIP
   port: 8080
-  
 
 ingress:
   enabled: true
@@ -21,10 +20,14 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-  - secretName: interns-tls
-    hosts:
-      - interns.labcerebrone.com
- 
+    - secretName: interns-tls
+      hosts:
+        - interns.labcerebrone.com
+
+serviceAccount:
+  create: false  # Set to false if you don't want to create a service account
+  name: ""      # Optionally, specify a name
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -36,7 +39,7 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
- 
+
 autoscaling:
   enabled: false
   minReplicas: 1
