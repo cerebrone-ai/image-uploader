@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-boot-service  # Ensure this matches what you refer to in your Ingress
+  name: shaik-k8s  # Ensure this matches what you refer to in your Ingress
 spec:
   type: ClusterIP  # Change from NodePort to ClusterIP
   ports:

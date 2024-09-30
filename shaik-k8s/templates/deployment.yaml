@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-app
+  name: shaik-k8s
   labels:
     app: spring-boot-app
 spec:
