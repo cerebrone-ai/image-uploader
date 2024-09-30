@@ -1,38 +1,76 @@
-name: remote ssh command
+name: Deploy to Kubernetes
 
 on:
   push:
     branches:
-      - shaik  # Only run on the 'shaik' branch
-  workflow_dispatch: # Allows you to manually trigger the workflow
+      - features/shaik
+  pull_request:
+    branches:
+      - features/shaik
 
 jobs:
   build:
-    name: remote ssh 
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH key
-      run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > training-key.pem
-        chmod 600 training-key.pem
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'adopt'
 
-    - name: Create .ssh directory
-      run: |
-        mkdir -p ~/.ssh
-        chmod 700 ~/.ssh
+    - name: Build with Maven
+      run: mvn clean package -Dmaven.test.skip=true
 
-    - name: Add EC2 instance to known_hosts
-      run: |
-        ssh-keyscan -H 54.196.166.253 >> ~/.ssh/known_hosts
-        chmod 644 ~/.ssh/known_hosts
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DO_ACCOUNT_TOKEN }}
 
-    - name: Execute remote SSH commands
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME_D }}
+        password: ${{ secrets.DOCKER_TOKEN_D }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: shaik2024/my-app:latest
+        build-args: PROFILE=your-profile
+
+  deploy_to_kubernetes:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Install DOCTL command
       run: |
-        ssh -i training-key.pem root@54.196.166.253 << 'EOF'
-          whoami
-          sudo apt-get update -y
-          sudo apt-get upgrade -y
-        EOF
+        sudo snap install doctl
+        sudo snap connect doctl:kube-config
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure Digital Ocean Credentials
+      run: |
+        doctl auth init --access-token ${{ secrets.DO_ACCOUNT_TOKEN }}
+        doctl kubernetes cluster kubeconfig save 37a5f702-e1a8-4732-9490-f5e047b5a724  # Replace with your cluster ID
+
+    - name: Set AWS Credentials
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_D }}" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_D }}" >> $GITHUB_ENV
+
+    - name: Deploy Helm on DOKS
+      run: |
+        helm upgrade --install spring-boot-application spring-boot-app-chart \
+          -f spring-boot-app-chart/values.yaml \
+          --set image.tag=latest \
+          --namespace interns  # Replace with your actual namespace
