@@ -70,7 +70,7 @@ jobs:
 
     - name: Deploy Helm on DOKS
       run: |
-        helm upgrade --install spring-boot-application spring-boot-app-chart \
-          -f shaik-k8s/values.yaml \
-          --set image.tag=latest \
-          --namespace interns  # Replace with your actual namespace
+       helm upgrade --install spring-boot-application ./shaik-k8s \
+       -f ./shaik-k8s/values.yaml \
+       --set image.tag=latest \
+       --namespace interns
