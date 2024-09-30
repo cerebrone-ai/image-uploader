@@ -1,7 +1,7 @@
 replicaCount: 1
 namespace: interns
 image:
-  repository: shaik2024/my-app:latest
+  repository: shaik2024/my-app
   tag: latest
 
 service:
