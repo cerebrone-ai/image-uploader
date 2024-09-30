@@ -24,6 +24,10 @@ ingress:
       hosts:
         - interns.labcerebrone.com
 
+serviceAccount:
+  create: true  # Set to true to create a new service account
+  name: ""  # Optional, can leave empty if you want a default name
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
