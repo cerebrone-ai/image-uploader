@@ -21,6 +21,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: spring-boot-service  # Ensure this matches your service name
+                name: shaik-k8s  # Ensure this matches your service name
                 port:
                   number: 8080          # Ensure this matches the service port
